@@ -19,7 +19,8 @@ client/dist/
 # Local Storage / Binary uploads / Audio files
 data/
 server/data/
-storage/
+/storage/
+!server/src/storage/**
 
 # Editor & OS files
 .DS_Store
