@@ -1,0 +1,29 @@
+# Environment and Secrets (PRD Section 3.12: Never committed to source control)
+.env
+.env.*
+!.env.example
+*.env
+server/.env
+client/.env
+
+# Dependencies
+node_modules/
+server/node_modules/
+client/node_modules/
+
+# Build artifacts
+dist/
+server/dist/
+client/dist/
+
+# Local Storage / Binary uploads / Audio files
+data/
+server/data/
+storage/
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
