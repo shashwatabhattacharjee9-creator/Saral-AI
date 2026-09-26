@@ -1,201 +1,266 @@
-import React, { useState } from 'react';
-import { ArrowRight, ShieldCheck, HeartPulse, Sparkles, Volume2, Globe, Shield, Activity, FileText, CheckCircle2, ChevronRight, AlertTriangle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  ChevronDown, 
+  ArrowRight, 
+  Triangle, 
+  ShieldCheck, 
+  HeartPulse, 
+  Sparkles, 
+  Volume2, 
+  FileText, 
+  Activity, 
+  CheckCircle2, 
+  AlertTriangle 
+} from 'lucide-react';
 
 interface Props {
   onLaunchApp: () => void;
 }
 
 export const LandingPage: React.FC<Props> = ({ onLaunchApp }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
-    setMobileMenuOpen(false);
+    setMenuOpen(false);
   };
 
   return (
-    <div className="bg-[#050505] text-[#fafafa] font-['Manrope',system-ui,sans-serif] min-h-screen selection:bg-white selection:text-black overflow-x-hidden">
+    <div className="bg-[#050505] text-[#fafafa] font-helvetica-neue min-h-screen selection:bg-brand-dark selection:text-white overflow-x-hidden">
       
       {/* ════════════════════════════════════════
-          HERO STAGE (Dark Cinematic Stage + Video)
+          PALOMAR LABS SPEC NAVBAR (Fixed)
           ════════════════════════════════════════ */}
-      <section className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-[#050505]">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? 'bg-brand-cream/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="relative flex items-center h-16 md:h-20">
+            {/* Desktop Left Links */}
+            <div className="hidden md:flex items-center gap-8 animate-fade-down stagger-1">
+              <button
+                onClick={() => scrollToSection('problem-solution')}
+                className="text-sm text-brand-dark tracking-wide uppercase hover:opacity-70 transition-opacity flex items-center gap-1 font-helvetica-neue"
+              >
+                <span>Solutions</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => scrollToSection('features')}
+                className="text-sm text-brand-dark tracking-wide uppercase hover:opacity-70 transition-opacity font-helvetica-neue"
+              >
+                Plans
+              </button>
+              <button
+                onClick={() => scrollToSection('build-story')}
+                className="text-sm text-brand-dark tracking-wide uppercase hover:opacity-70 transition-opacity font-helvetica-neue"
+              >
+                News
+              </button>
+            </div>
+
+            {/* Center Logo */}
+            <div
+              onClick={onLaunchApp}
+              className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 animate-fade-down stagger-2 cursor-pointer select-none"
+            >
+              <Triangle className="w-5 h-5 text-brand-dark fill-brand-dark" />
+              <span className="text-xl text-brand-dark tracking-tight font-helvetica-neue font-medium">
+                SARAL AI
+              </span>
+            </div>
+
+            {/* Desktop CTA (Right) */}
+            <button
+              onClick={onLaunchApp}
+              className="hidden md:inline-flex items-center ml-auto px-5 py-2.5 bg-brand-dark text-white text-sm tracking-wide uppercase rounded-full hover:bg-brand-green transition-colors animate-fade-down stagger-3 font-helvetica-neue"
+            >
+              <span>Redirect to Web App</span>
+              <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+            </button>
+
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden ml-auto z-50 w-10 h-10 flex items-center justify-center relative focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-5 relative">
+                <span
+                  className={`w-6 h-[2px] bg-brand-dark rounded transition-all duration-300 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] absolute left-0 top-[6px] ${
+                    menuOpen ? 'rotate-45 translate-y-[5px]' : ''
+                  }`}
+                />
+                <span
+                  className={`w-6 h-[2px] bg-brand-dark rounded transition-all duration-300 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] absolute left-0 top-[13px] ${
+                    menuOpen ? '-rotate-45' : ''
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Overlay Menu */}
+      <div
+        className={`fixed inset-0 bg-brand-cream z-40 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden ${
+          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div
+          className={`flex flex-col items-center justify-center h-full gap-8 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] delay-100 ${
+            menuOpen ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0'
+          }`}
+        >
+          <button
+            onClick={() => scrollToSection('problem-solution')}
+            className="text-3xl text-brand-dark tracking-tight font-helvetica-neue"
+          >
+            Solutions
+          </button>
+          <button
+            onClick={() => scrollToSection('features')}
+            className="text-3xl text-brand-dark tracking-tight font-helvetica-neue"
+          >
+            Plans
+          </button>
+          <button
+            onClick={() => scrollToSection('build-story')}
+            className="text-3xl text-brand-dark tracking-tight font-helvetica-neue"
+          >
+            News
+          </button>
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              onLaunchApp();
+            }}
+            className="mt-4 inline-flex items-center px-8 py-3.5 bg-brand-dark text-white text-lg tracking-wide rounded-full font-helvetica-neue hover:bg-brand-green transition-colors"
+          >
+            <span>Redirect to Web App</span>
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </button>
+        </div>
+      </div>
+
+      {/* ════════════════════════════════════════
+          PALOMAR LABS SPEC HERO SECTION
+          ════════════════════════════════════════ */}
+      <section className="relative w-full h-screen min-h-[700px] overflow-hidden bg-brand-cream font-helvetica-neue">
         
-        {/* CloudFront Video Plate */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        {/* Background Video Layer */}
+        <div className="absolute inset-0">
           <video
-            className="absolute left-1/2 top-0 w-[1492px] max-w-none h-[1054px] -translate-x-1/2 object-cover opacity-85"
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            aria-hidden="true"
+            className="w-full h-full object-cover object-bottom"
           >
             <source
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_112712_da9d53df-6d27-4b12-bdf6-aa9dc2622bdf.mp4"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260820_010308_b1636845-4c15-4ab6-b0c9-9a29bfb0c6e3.mp4"
               type="video/mp4"
             />
           </video>
-          
-          {/* Dual Fade Overlays (Bottom Fade + Side Letterbox) */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: `
-                linear-gradient(to bottom,
-                  rgba(5,5,5,0) 70%,
-                  rgba(5,5,5,0.45) 80%,
-                  rgba(5,5,5,0.85) 90%,
-                  #050505 100%),
-                linear-gradient(to right,
-                  #050505 0%,
-                  transparent 18%,
-                  transparent 82%,
-                  #050505 100%)
-              `
-            }}
-          />
         </div>
 
-        {/* Topbar / Navigation */}
-        <header className="relative z-20 w-full max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-          {/* Brand Mark (S-like lightning geometric) */}
-          <div className="flex items-center gap-3 cursor-pointer select-none" onClick={onLaunchApp}>
-            <div className="w-8 h-12 flex items-center justify-center">
-              <svg viewBox="0 0 31.5 48.5" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-11">
-                <defs>
-                  <linearGradient id="brandGrad" x1="8" y1="0" x2="34.1" y2="28.9" gradientUnits="userSpaceOnUse">
-                    <stop offset="0" stopColor="#9e9e9e"/>
-                    <stop offset="0.28" stopColor="#a6a6a6"/>
-                    <stop offset="0.34" stopColor="#a3a3a3"/>
-                    <stop offset="0.40" stopColor="#3a3a3a"/>
-                    <stop offset="0.55" stopColor="#414141"/>
-                    <stop offset="0.60" stopColor="#7a7a7a"/>
-                    <stop offset="0.68" stopColor="#8e8e8e"/>
-                    <stop offset="0.80" stopColor="#a9a9a9"/>
-                    <stop offset="0.95" stopColor="#c4c4c4"/>
-                    <stop offset="1" stopColor="#cccccc"/>
-                  </linearGradient>
-                </defs>
-                <path d="M21.5 0 L21.5 19.5 L31.5 19.5 L31.5 29 L10 48.5 L10 28.5 L0.5 28.5 L0.5 18.5 Z" fill="url(#brandGrad)"/>
-                <rect x="0.5" y="18.5" width="9" height="10" fill="#fdfdfd"/>
-                <rect x="22" y="19.5" width="9.5" height="9.5" fill="#fdfdfd"/>
-              </svg>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold tracking-tight text-white text-base leading-none">SARAL AI</span>
-              <span className="text-[10px] text-[#a7a6a6] tracking-widest uppercase font-medium">सरल • Indic Voice</span>
-            </div>
+        {/* Content Column (Sits on top of video, left-aligned) */}
+        <div className="relative z-10 flex flex-col items-start max-w-7xl mx-auto pt-28 md:pt-36 px-6 lg:px-8">
+          
+          {/* Announcement Pill */}
+          <div
+            onClick={onLaunchApp}
+            className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-dark/15 bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-colors mb-5 md:mb-6 animate-fade-up stagger-3 select-none"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            <span className="text-sm text-brand-dark font-medium">
+              A Sarvam Campus'26 Build | Live for everyone today!
+            </span>
+            <ArrowRight className="w-3.5 h-3.5 text-brand-dark" />
           </div>
 
-          {/* Desktop Nav Links */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#b6b5b5]">
-            <button onClick={() => scrollToSection('problem-solution')} className="hover:text-white transition">
-              Problem &amp; Solution
-            </button>
-            <button onClick={() => scrollToSection('features')} className="hover:text-white transition">
-              Core Features
-            </button>
-            <button onClick={() => scrollToSection('build-story')} className="hover:text-white transition">
-              The Build Story
-            </button>
-            <button onClick={() => scrollToSection('final-cta')} className="hover:text-white transition">
-              Launch Demo
-            </button>
-          </nav>
+          {/* Headline (with line break on sm+) */}
+          <h1 className="text-left text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brand-dark leading-[1.05] tracking-tight max-w-4xl font-helvetica-neue animate-fade-up stagger-4">
+            The Next Layer of Intelligence,
+            <br className="hidden sm:block" /> Prescriptions Decoded for Every Indian Voice
+          </h1>
 
-          {/* Header Action Button */}
-          <div className="flex items-center gap-4">
+          {/* Sub-headline (Preserved text) */}
+          <p className="mt-4 md:mt-5 text-base sm:text-lg md:text-xl text-brand-dark/80 font-normal leading-relaxed max-w-2xl font-helvetica-neue animate-fade-up stagger-4">
+            Turning illegible cursive prescriptions and discharge summaries into structured medicine schedules, 10 Indic languages, and warm spoken audio in under 90 seconds.
+          </p>
+
+          {/* Action / CTC Button */}
+          <div className="mt-6 md:mt-8 flex flex-wrap items-center gap-4 animate-fade-up stagger-5">
             <button
               onClick={onLaunchApp}
-              className="inline-flex items-center justify-center gap-1.5 px-6 py-2.5 rounded-full bg-white text-[#050505] font-semibold text-sm hover:opacity-90 active:scale-95 transition shadow-sm"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-brand-dark text-white font-medium text-sm sm:text-base tracking-wide uppercase hover:bg-brand-green active:scale-95 shadow-lg transition"
             >
-              <span>Redirect to Web App</span>
-              <ArrowRight className="w-4 h-4 text-black" />
+              <span>Redirect to Official Web App</span>
+              <ArrowRight className="w-4 h-4 text-white" />
+            </button>
+            <button
+              onClick={() => scrollToSection('problem-solution')}
+              className="inline-flex items-center justify-center px-5 py-3.5 text-sm sm:text-base font-medium text-brand-dark hover:opacity-75 transition font-helvetica-neue"
+            >
+              <span>Explore Architecture ↓</span>
             </button>
           </div>
-        </header>
 
-        {/* Hero Central Content */}
-        <main className="relative z-10 max-w-7xl mx-auto px-6 pt-12 pb-20 sm:pt-20 flex flex-col justify-center flex-grow">
-          <div className="max-w-3xl">
-            
-            {/* Visual Badge: A Sarvam Campus'26 Build */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/[0.07] border border-white/15 backdrop-blur-md mb-8">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-xs font-semibold uppercase tracking-wider text-stone-200">
-                A Sarvam Campus'26 Build
+          {/* Backed by / Trusted by Row */}
+          <div className="w-full mt-8 md:mt-10 animate-fade-up stagger-5">
+            <div className="text-left text-xs tracking-[0.25em] uppercase text-brand-dark/50 mb-4 md:mb-6 font-helvetica-neue">
+              Backed by
+            </div>
+            <div className="flex flex-wrap items-center justify-start gap-6 md:gap-12 lg:gap-16 animate-fade-up stagger-6">
+              <span className="text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap font-playfair">
+                Meridian
               </span>
-              <span className="text-white/40 text-xs">|</span>
-              <span className="text-xs text-stone-400">Sovereign Indic AI</span>
-            </div>
-
-            {/* H1 Headline */}
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight text-white leading-[1.1] mb-6">
-              <span className="block font-normal">The Next Layer</span>
-              <span className="block font-light text-stone-300">of Intelligence.</span>
-            </h1>
-
-            {/* H2 Sub-headline */}
-            <p className="text-lg sm:text-xl text-[#a7a6a6] font-normal leading-relaxed mb-10 max-w-2xl">
-              Turning illegible cursive prescriptions and discharge summaries into structured medicine schedules, 10 Indic languages, and warm spoken audio in under 90 seconds.
-            </p>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4">
-              <button
-                onClick={onLaunchApp}
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-white text-[#050505] font-bold text-base hover:bg-stone-100 hover:shadow-lg active:scale-95 transition"
-              >
-                <span>Redirect to Official Web App</span>
-                <ArrowRight className="w-4 h-4 text-black" />
-              </button>
-
-              <button
-                onClick={() => scrollToSection('problem-solution')}
-                className="inline-flex items-center justify-center px-6 py-3.5 text-base font-medium text-white/90 hover:text-white hover:underline transition"
-              >
-                <span>Explore Architecture ↓</span>
-              </button>
-            </div>
-
-            {/* Instant Demo Trust Indicator */}
-            <div className="mt-8 flex items-center gap-3 text-xs text-[#a7a6a6]">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span>Zero-Friction Access • No Login Required • 100% DPDP Act 2023 Compliant</span>
-            </div>
-
-          </div>
-        </main>
-
-        {/* Bottom Partner Strip & Model Badges */}
-        <div className="relative z-10 w-full border-t border-white/10 bg-black/40 backdrop-blur-md py-5">
-          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="text-xs text-[#8b8a8a] uppercase tracking-wider font-semibold">
-              Powered by Sarvam AI Sovereign Models:
-            </div>
-            <div className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs text-stone-400">
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                Gemma-4 Vision OCR
+              <span className="text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap font-oswald uppercase">
+                STELLEX
               </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
-                Sarvam-Translate:v1 (10 Languages)
+              <span className="text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap font-montserrat">
+                Luminar
               </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-sky-400"></span>
-                Bulbul:v2 Indic Speech Synthesis
+              <span className="text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap font-roboto-slab uppercase">
+                OVERLAND
+              </span>
+              <span className="text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap font-raleway">
+                Kinetic
               </span>
             </div>
           </div>
+
         </div>
-
       </section>
+
 
 
       {/* ════════════════════════════════════════
