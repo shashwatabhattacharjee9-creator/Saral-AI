@@ -8,7 +8,7 @@ export const config = {
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET || 'saral-super-secret-refresh-key-32chars!',
   databaseUrl: process.env.DATABASE_URL || '',
   sarvamApiKey: process.env.SARVAM_API_KEY || '',
-  useMockSarvam: process.env.USE_MOCK_SARVAM !== 'false', // default to mock if not explicitly false or no key
+  useMockSarvam: process.env.NODE_ENV === 'test' || process.env.USE_MOCK_SARVAM === 'true' || !process.env.SARVAM_API_KEY,
   ocrLowConfidenceRatioThreshold: parseFloat(process.env.OCR_LOW_CONFIDENCE_RATIO_THRESHOLD || '0.34'),
   storageDir: process.env.STORAGE_DIR || './data/storage',
   baseUrl: process.env.BASE_URL || 'http://localhost:4000',

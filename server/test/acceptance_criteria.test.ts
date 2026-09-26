@@ -9,6 +9,7 @@ import { classifyOcrConfidence } from '../src/algorithms/confidenceClassifier';
 import { detectSafetyFlags } from '../src/algorithms/safetyFlags';
 import { extractionWorker } from '../src/modules/worker/extractionWorker';
 import { storage } from '../src/storage/storage';
+import { sarvam } from '../src/ai/sarvamClient';
 import { v4 as uuidv4 } from 'uuid';
 
 describe('Saral Acceptance Criteria Suite (PRD Section 18: AC1 - AC9)', () => {
@@ -16,6 +17,7 @@ describe('Saral Acceptance Criteria Suite (PRD Section 18: AC1 - AC9)', () => {
     db.clearAll();
     redis.clearAll();
     mockSarvam.reset();
+    sarvam.setApiKey(''); // Ensure isolated mock Sarvam in tests per Section 13.6
   });
 
   // AC1 (Upload & Extraction): Given a valid single-page prescription image and completed consent,
@@ -86,18 +88,15 @@ describe('Saral Acceptance Criteria Suite (PRD Section 18: AC1 - AC9)', () => {
       .send();
     expect(finalizeRes.status).toBe(202);
 
-    // 6. Direct worker run to simulate async queue execution
-    await extractionWorker.processScan({
-      scanId,
-      patientProfileId: profile.id,
-      targetLanguageCode: 'hi-IN',
-      requestedBy: user.id,
-    });
-
-    // 7. Poll retrieval GET /api/v1/scans/:id
-    const pollRes = await request(app)
-      .get(`/api/v1/scans/${scanId}`)
-      .set('Authorization', `Bearer ${tokens.accessToken}`);
+    // 6. Poll retrieval GET /api/v1/scans/:id until completed
+    let pollRes: any;
+    for (let i = 0; i < 30; i++) {
+      await new Promise((r) => setTimeout(r, 100));
+      pollRes = await request(app)
+        .get(`/api/v1/scans/${scanId}`)
+        .set('Authorization', `Bearer ${tokens.accessToken}`);
+      if (pollRes.body.status === 'completed') break;
+    }
 
     expect(pollRes.status).toBe(200);
     expect(pollRes.body.status).toBe('completed');
