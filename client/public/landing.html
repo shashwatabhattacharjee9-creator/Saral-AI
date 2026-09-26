@@ -4,11 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>The Next Layer of Intelligence</title>
+  <!-- Manrope font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 
   <style>
+    /* ════════════════════════════════════════
+       COLOR TOKENS & RESPONSIVE UNIT SYSTEM
+       ════════════════════════════════════════ */
     :root {
       --ink: #fafafa;
       --muted: #a7a6a6;
@@ -18,6 +22,7 @@
       --pill-ink: #050505;
       --stage-bg: #050505;
 
+      /* Reference Canvas: 1487 x 1058 */
       --u: calc(100vh / 1058);
       --uw: calc(100vw / 1487);
       --h: clamp(var(--u), calc(var(--u) * .65 + var(--uw) * .35), calc(var(--u) * 1.16));
@@ -48,6 +53,9 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
+    /* ════════════════════════════════════════
+       STAGE & FULL-BLEED VIDEO PLATE
+       ════════════════════════════════════════ */
     .stage {
       position: relative;
       width: 100%;
@@ -77,12 +85,14 @@
       pointer-events: none;
     }
 
+    /* Dual Fade Overlays (Bottom Fade + Side Letterbox) */
     .plate::after {
       content: '';
       position: absolute;
       inset: 0;
       pointer-events: none;
       background:
+        /* 1) Bottom Fade */
         linear-gradient(to bottom,
           rgba(5,5,5,0) 78.8%,
           rgba(5,5,5,.23) 79.6%,
@@ -93,6 +103,7 @@
           rgba(5,5,5,.905) 91%,
           rgba(5,5,5,.96) 95%,
           #050505 100%),
+        /* 2) Side Letterbox */
         linear-gradient(to right,
           #050505 calc(50% - calc(746 * var(--u))),
           transparent calc(50% - calc(676 * var(--u))),
@@ -100,6 +111,9 @@
           #050505 calc(50% + calc(746 * var(--u))));
     }
 
+    /* ════════════════════════════════════════
+       HEADER / TOPBAR
+       ════════════════════════════════════════ */
     header.topbar {
       position: absolute;
       top: 0;
@@ -114,6 +128,7 @@
       pointer-events: auto;
     }
 
+    /* Brand mark */
     a.brand {
       position: absolute;
       left: calc(75 * var(--u));
@@ -131,6 +146,7 @@
       display: block;
     }
 
+    /* Centered Nav Links */
     nav.links {
       position: absolute;
       left: 50%;
@@ -156,9 +172,11 @@
       color: var(--ink);
     }
 
+    /* Distinct gaps matching Figma comp */
     nav.links a:nth-child(3) { margin-left: calc(-1 * var(--u)); }
     nav.links a:nth-child(4) { margin-left: calc(1.5 * var(--u)); }
 
+    /* Header CTA Pill */
     a.pill {
       display: inline-flex;
       align-items: center;
@@ -197,10 +215,14 @@
       display: inline-block;
     }
 
+    /* Burger button (Portrait / Mobile only) */
     button.burger {
       display: none;
     }
 
+    /* ════════════════════════════════════════
+       HERO CONTENT
+       ════════════════════════════════════════ */
     main.hero {
       position: absolute;
       inset: 0;
@@ -212,6 +234,7 @@
       pointer-events: auto;
     }
 
+    /* Headline */
     h1.headline {
       position: absolute;
       left: calc(75.5 * var(--u));
@@ -229,6 +252,7 @@
       white-space: nowrap;
     }
 
+    /* Subcopy */
     p.sub {
       position: absolute;
       left: calc(75.5 * var(--u));
@@ -246,6 +270,7 @@
       white-space: nowrap;
     }
 
+    /* Actions */
     .actions {
       position: static;
     }
@@ -284,6 +309,9 @@
       opacity: 0.8;
     }
 
+    /* ════════════════════════════════════════
+       PARTNER STRIP (.logos)
+       ════════════════════════════════════════ */
     .logos {
       position: absolute;
       bottom: calc(30 * var(--u));
@@ -356,10 +384,14 @@
     .lg.lg4 svg { width: calc(28.5 * var(--u)); height: calc(25.5 * var(--u)); }
     .lg.lg4 .word { font-size: calc(15.3 * var(--u)); margin-left: calc(8.5 * var(--u)); }
 
+    /* Mobile menu overlay */
     nav.menu {
       display: none;
     }
 
+    /* ════════════════════════════════════════
+       ANIMATION KEYFRAMES
+       ════════════════════════════════════════ */
     @keyframes rise {
       from { opacity: 0; transform: translateY(calc(14 * var(--u))); }
       to   { opacity: 1; transform: translateY(0); }
@@ -375,6 +407,10 @@
       to   { opacity: 1; }
     }
 
+    /* ════════════════════════════════════════
+       PORTRAIT & MOBILE RESPONSIVE BEHAVIOR
+       (max-aspect-ratio: 11/10)
+       ════════════════════════════════════════ */
     @media (max-aspect-ratio: 11/10) {
       :root {
         --m: min(calc(100vw / 430), 1.34px);
@@ -429,6 +465,7 @@
             #050505 100%);
       }
 
+      /* Topbar Mobile */
       header.topbar {
         position: relative;
         height: calc(84 * var(--m));
@@ -448,6 +485,7 @@
         display: none;
       }
 
+      /* Burger Button */
       button.burger {
         display: flex;
         flex-direction: column;
@@ -482,6 +520,7 @@
         transform: translateY(calc(-3.5 * var(--m))) rotate(-45deg);
       }
 
+      /* Hero Content Mobile */
       main.hero {
         position: relative;
         inset: auto;
@@ -536,6 +575,7 @@
         font-size: calc(16 * var(--m));
       }
 
+      /* Partner Strip Mobile: 2x2 Grid */
       .logos {
         position: relative;
         bottom: auto;
@@ -562,6 +602,7 @@
         font-size: calc(15 * var(--m)) !important;
       }
 
+      /* Mobile Overlay Menu */
       nav.menu {
         display: flex;
         position: fixed;
@@ -655,6 +696,7 @@
       }
     }
 
+    /* Tablet Portrait Band (≥600px AND max-aspect-ratio 11/10) */
     @media (min-width: 600px) and (max-aspect-ratio: 11/10) {
       :root {
         --m: min(calc(100vw / 860), calc(100vh / 760), 1.25px);
@@ -677,6 +719,7 @@
       }
     }
 
+    /* Reduced Motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.001s !important;
@@ -688,13 +731,16 @@
 </head>
 <body>
   <div class="stage" id="stage">
+    <!-- Full-bleed looping CloudFront video plate -->
     <div class="plate" aria-hidden="true">
       <video class="plate-video" autoplay muted loop playsinline preload="auto">
         <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260808_112712_da9d53df-6d27-4b12-bdf6-aa9dc2622bdf.mp4" type="video/mp4">
       </video>
     </div>
 
+    <!-- Header / Topbar -->
     <header class="topbar">
+      <!-- Geometric S-like Lightning Brand Mark -->
       <a href="#" class="brand" aria-label="Home">
         <svg viewBox="0 0 31.5 48.5" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -717,6 +763,7 @@
         </svg>
       </a>
 
+      <!-- Centered Navigation Links -->
       <nav class="links" aria-label="Primary">
         <a href="#about">About</a>
         <a href="#features">Features</a>
@@ -724,16 +771,19 @@
         <a href="#contact">Contact</a>
       </nav>
 
-      <a href="#get-started" class="pill pill-nav">
-        <span>Get Started</span>
+      <!-- Topbar White Pill CTA -->
+      <a href="/#app" class="pill pill-nav">
+        <span>Launch App</span>
       </a>
 
+      <!-- Mobile Frosted Glass Burger -->
       <button class="burger" id="burger" aria-label="Toggle navigation menu" aria-expanded="false">
         <i></i>
         <i></i>
       </button>
     </header>
 
+    <!-- Mobile Full-screen Overlay Menu -->
     <nav class="menu" id="menu" aria-hidden="true">
       <div class="menu-inner">
         <p class="menu-eyebrow">Menu</p>
@@ -744,34 +794,42 @@
           <li><a href="#contact" class="menu-link">Contact</a></li>
         </ul>
         <div class="menu-foot">
-          <a href="#get-started" class="pill menu-link"><span>Get Started</span></a>
-          <a href="#architecture" class="ghost menu-link" style="text-align:center;">View Architecture</a>
+          <a href="/#app" class="pill menu-link"><span>Launch App</span></a>
+          <a href="#features" class="ghost menu-link" style="text-align:center;">View Architecture</a>
         </div>
       </div>
     </nav>
 
+    <!-- Hero Main Section -->
     <main class="hero">
+      <div style="position: absolute; left: calc(75.5 * var(--u)); top: calc(178 * var(--u)); display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #ececec; z-index: 10;">
+        <span style="width: 7px; height: 7px; border-radius: 50%; background: #34d399;"></span>
+        A Sarvam Campus'26 Build
+      </div>
+
       <h1 class="headline">
         <span>The Next Layer</span>
         <span>of Intelligence</span>
       </h1>
 
       <p class="sub">
-        <span>A unified infrastructure platform to help teams build,</span>
-        <span>ship, and scale AI systems with confidence.</span>
+        <span>A sovereign Indic intelligence platform turning cursive medical prescriptions</span>
+        <span>into structured schedules, 10 Indian languages, and voice in under 90 seconds.</span>
       </p>
 
       <div class="actions">
-        <a href="#get-started" class="pill pill-cta">
-          <span>Get Started</span>
+        <a href="/#app" class="pill pill-cta">
+          <span>Launch Saral AI</span>
         </a>
-        <a href="#architecture" class="ghost">
+        <a href="#features" class="ghost">
           View Architecture
         </a>
       </div>
     </main>
 
+    <!-- Bottom Partner Logoipsum Strip -->
     <div class="logos" aria-label="Trusted Partners">
+      <!-- Partner 1 -->
       <div class="lg lg1">
         <svg viewBox="0 0 30 31">
           <mask id="m1">
@@ -784,6 +842,7 @@
         <span class="word">logoipsum</span>
       </div>
 
+      <!-- Partner 2 -->
       <div class="lg lg2">
         <svg viewBox="0 0 25 30">
           <rect x="0" y="0" width="7" height="30" rx="3.5"/>
@@ -792,6 +851,7 @@
         <span class="word">logoipsum<span class="dot"></span></span>
       </div>
 
+      <!-- Partner 3 -->
       <div class="lg lg3">
         <svg viewBox="0 0 28 28">
           <circle cx="14" cy="14" r="12.35" fill="none" stroke="currentColor" stroke-width="3.1"/>
@@ -801,6 +861,7 @@
         <span class="word">logoipsum</span>
       </div>
 
+      <!-- Partner 4 -->
       <div class="lg lg4">
         <svg viewBox="0 0 28 25.5">
           <path d="M14 0C8.5 0 3.5 3 0 7.5L5.5 13C7.8 9.9 10.7 8 14 8C17.3 8 20.2 9.9 22.5 13L28 7.5C24.5 3 19.5 0 14 0Z"/>

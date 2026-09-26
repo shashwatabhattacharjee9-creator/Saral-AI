@@ -9,6 +9,7 @@ import { ScanDetailPage } from './pages/ScanDetailPage';
 import { ShareAcceptPage } from './pages/ShareAcceptPage';
 import { DataSettingsPage } from './pages/DataSettingsPage';
 import { OrgDashboardPage } from './pages/OrgDashboardPage';
+import { LandingPage } from './pages/LandingPage';
 import { Navbar } from './components/Navbar';
 import { PatientProfile } from '../../shared/types';
 import { Users, Shield, Building2 } from 'lucide-react';
@@ -16,7 +17,12 @@ import { Users, Shield, Building2 } from 'lucide-react';
 export const App: React.FC = () => {
   const { user, isLoading, consentStatus } = useAuth();
 
-  const [currentView, setCurrentView] = useState<string>('profiles');
+  const [currentView, setCurrentView] = useState<string>(() => {
+    if (typeof window !== 'undefined' && window.location.hash.includes('app')) {
+      return 'profiles';
+    }
+    return 'landing';
+  });
   const [selectedProfile, setSelectedProfile] = useState<PatientProfile | null>(null);
   const [selectedScanId, setSelectedScanId] = useState<string | null>(null);
   const [shareToken, setShareToken] = useState<string | null>(null);
@@ -29,6 +35,10 @@ export const App: React.FC = () => {
         const token = hash.replace('#share=', '');
         setShareToken(token);
         setCurrentView('share_accept');
+      } else if (hash === '#app') {
+        setCurrentView('profiles');
+      } else if (hash === '#landing') {
+        setCurrentView('landing');
       }
     };
     handleHash();
@@ -41,6 +51,18 @@ export const App: React.FC = () => {
       <div className="min-h-screen bg-parchment-100 flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-moss-200 border-t-moss-600 rounded-full animate-spin"></div>
       </div>
+    );
+  }
+
+  // Handle Landing Page over main webapp
+  if (currentView === 'landing') {
+    return (
+      <LandingPage
+        onLaunchApp={() => {
+          setCurrentView('profiles');
+          window.location.hash = '#app';
+        }}
+      />
     );
   }
 

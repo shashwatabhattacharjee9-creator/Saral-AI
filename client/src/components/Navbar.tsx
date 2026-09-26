@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { HeartPulse, Users, Shield, Building2, LogOut, ArrowRightLeft } from 'lucide-react';
+import { HeartPulse, Users, Shield, Building2, LogOut, ArrowRightLeft, Sparkles } from 'lucide-react';
 
 interface Props {
   currentView: string;
@@ -79,6 +79,19 @@ export const Navbar: React.FC<Props> = ({ currentView, onNavigate }) => {
           >
             <Shield className="w-4 h-4 text-stone-600" />
             <span className="hidden sm:inline">Data & Privacy</span>
+          </button>
+
+          <button
+            onClick={() => onNavigate('landing')}
+            className={`px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition ${
+              currentView === 'landing'
+                ? 'bg-stone-200 text-stone-900'
+                : 'text-stone-600 hover:bg-stone-100'
+            }`}
+            title="View Landing Page & Sarvam Build Story"
+          >
+            <Sparkles className="w-4 h-4 text-emerald-600" />
+            <span className="hidden sm:inline">Build Story</span>
           </button>
 
           <div className="h-6 w-px bg-stone-200 mx-1 hidden sm:block"></div>
