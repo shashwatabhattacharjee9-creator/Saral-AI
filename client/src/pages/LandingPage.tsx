@@ -112,9 +112,10 @@ export const LandingPage: React.FC<Props> = ({ onLaunchApp }) => {
           <div className="flex items-center gap-4">
             <button
               onClick={onLaunchApp}
-              className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-white text-[#050505] font-semibold text-sm hover:opacity-90 active:scale-95 transition shadow-sm"
+              className="inline-flex items-center justify-center gap-1.5 px-6 py-2.5 rounded-full bg-white text-[#050505] font-semibold text-sm hover:opacity-90 active:scale-95 transition shadow-sm"
             >
-              <span>Launch Webapp</span>
+              <span>Redirect to Web App</span>
+              <ArrowRight className="w-4 h-4 text-black" />
             </button>
           </div>
         </header>
@@ -150,7 +151,7 @@ export const LandingPage: React.FC<Props> = ({ onLaunchApp }) => {
                 onClick={onLaunchApp}
                 className="inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-white text-[#050505] font-bold text-base hover:bg-stone-100 hover:shadow-lg active:scale-95 transition"
               >
-                <span>Launch Saral AI</span>
+                <span>Redirect to Official Web App</span>
                 <ArrowRight className="w-4 h-4 text-black" />
               </button>
 
@@ -452,9 +453,9 @@ export const LandingPage: React.FC<Props> = ({ onLaunchApp }) => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={onLaunchApp}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white text-black font-bold text-base hover:bg-stone-100 hover:shadow-xl active:scale-95 transition"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-9 py-4 rounded-full bg-white text-black font-bold text-base hover:bg-stone-100 hover:shadow-2xl active:scale-95 transition"
               >
-                <span>Launch Saral AI Webapp</span>
+                <span>Redirect to Official Web App</span>
                 <ArrowRight className="w-4 h-4 text-black" />
               </button>
             </div>
@@ -475,7 +476,7 @@ export const LandingPage: React.FC<Props> = ({ onLaunchApp }) => {
               DPDP Act 2023 Compliant • Non-Diagnostic Medical AI Information Tool
             </div>
             <div className="flex items-center gap-4 text-stone-400">
-              <button onClick={onLaunchApp} className="hover:text-white transition">Webapp</button>
+              <button onClick={onLaunchApp} className="hover:text-white transition">Official Webapp</button>
               <button onClick={() => scrollToSection('problem-solution')} className="hover:text-white transition">Problem</button>
               <button onClick={() => scrollToSection('features')} className="hover:text-white transition">Features</button>
               <button onClick={() => scrollToSection('build-story')} className="hover:text-white transition">Story</button>
@@ -484,6 +485,17 @@ export const LandingPage: React.FC<Props> = ({ onLaunchApp }) => {
 
         </div>
       </section>
+
+      {/* Floating Mobile Redirect CTA */}
+      <div className="md:hidden fixed bottom-5 left-4 right-4 z-40">
+        <button
+          onClick={onLaunchApp}
+          className="w-full py-3.5 px-5 rounded-full bg-white text-black font-bold text-sm shadow-2xl flex items-center justify-center gap-2 border border-white/20 active:scale-95 transition"
+        >
+          <span>Redirect to Official Web App</span>
+          <ArrowRight className="w-4 h-4 text-black" />
+        </button>
+      </div>
 
     </div>
   );

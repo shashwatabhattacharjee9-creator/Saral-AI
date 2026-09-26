@@ -88,10 +88,10 @@ export const Navbar: React.FC<Props> = ({ currentView, onNavigate }) => {
                 ? 'bg-stone-200 text-stone-900'
                 : 'text-stone-600 hover:bg-stone-100'
             }`}
-            title="View Landing Page & Sarvam Build Story"
+            title="Return to Landing Page & Overview"
           >
             <Sparkles className="w-4 h-4 text-emerald-600" />
-            <span className="hidden sm:inline">Build Story</span>
+            <span className="hidden sm:inline">Landing Page</span>
           </button>
 
           <div className="h-6 w-px bg-stone-200 mx-1 hidden sm:block"></div>

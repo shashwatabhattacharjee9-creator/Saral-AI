@@ -17,9 +17,11 @@ import { Users, Shield, Building2 } from 'lucide-react';
 export const App: React.FC = () => {
   const { user, isLoading, consentStatus } = useAuth();
 
+  // User Requirement: Upon opening the link, whoever opens this Saral web app
+  // will first and foremost be introduced to the landing page.
   const [currentView, setCurrentView] = useState<string>(() => {
-    if (typeof window !== 'undefined' && window.location.hash.includes('app')) {
-      return 'profiles';
+    if (typeof window !== 'undefined' && window.location.hash.startsWith('#share=')) {
+      return 'share_accept';
     }
     return 'landing';
   });
