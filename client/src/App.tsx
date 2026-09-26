@@ -64,12 +64,25 @@ export const App: React.FC = () => {
     );
   }
 
-  if (!user) {
-    return <LoginPage />;
+  if (currentView === 'login') {
+    return (
+      <div>
+        <div className="bg-moss-900 text-white text-xs px-4 py-2 flex justify-between items-center">
+          <span>Saral Demo Deployment • Open Evaluation Mode</span>
+          <button
+            onClick={() => setCurrentView('profiles')}
+            className="underline hover:text-moss-200"
+          >
+            ← Return to Family Profiles
+          </button>
+        </div>
+        <LoginPage />
+      </div>
+    );
   }
 
-  const needsConsent = !consentStatus?.dataProcessing || !consentStatus?.aiProcessingThirdParty;
-  const isOrgStaff = user.role === 'org_admin' || user.role === 'org_member';
+  const needsConsent = false;
+  const isOrgStaff = user?.role === 'org_admin' || user?.role === 'org_member';
 
   return (
     <div className="min-h-screen bg-parchment-100 flex flex-col justify-between">

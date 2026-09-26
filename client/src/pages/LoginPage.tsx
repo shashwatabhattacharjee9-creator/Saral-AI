@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { HeartPulse, Phone, Lock, Mail, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
-  const { requestOtp, verifyOtp, loginWithEmail } = useAuth();
+  const { requestOtp, verifyOtp, loginWithEmail, continueAsDemo } = useAuth();
 
   const [mode, setMode] = useState<'otp' | 'email'>('otp');
   const [phoneNumber, setPhoneNumber] = useState('+91');
@@ -86,6 +86,21 @@ export const LoginPage: React.FC = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
         <div className="bg-white py-8 px-6 sm:px-10 shadow-lg rounded-2xl border border-stone-200">
+          {/* 1-Click Instant Demo Button */}
+          <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-moss-50 to-emerald-50 border border-moss-200 text-center">
+            <p className="text-xs font-semibold text-moss-900 mb-2">
+              Evaluating Saral? Bypass authentication instantly:
+            </p>
+            <button
+              type="button"
+              onClick={continueAsDemo}
+              className="w-full py-2.5 px-4 rounded-xl bg-moss-600 hover:bg-moss-700 text-white font-semibold text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-2"
+            >
+              <span>Instant Guest Access (No Auth Required)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
           {/* Mode Switcher */}
           <div className="flex bg-stone-100 p-1 rounded-xl mb-6">
             <button

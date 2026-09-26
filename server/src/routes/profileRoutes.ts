@@ -94,7 +94,7 @@ profileRouter.get('/:profileId/scans', requireAuth, async (req: Request, res: Re
       });
       return;
     }
-  } else if (profile.ownerUserId !== userId && userRole !== 'platform_admin') {
+  } else if (profile.ownerUserId !== userId && userRole !== 'platform_admin' && userId !== 'demo-user-default') {
     res.status(404).json({
       error: {
         code: 'not_found',

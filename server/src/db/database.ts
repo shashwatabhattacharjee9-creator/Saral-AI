@@ -143,6 +143,7 @@ export class Database {
 
   constructor() {
     this.seedSyntheticErasedUser();
+    this.seedDefaultDemoUser();
   }
 
   private seedSyntheticErasedUser(): void {
@@ -157,6 +158,88 @@ export class Database {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         deletedAt: new Date().toISOString(),
+      });
+    }
+  }
+
+  private seedDefaultDemoUser(): void {
+    const demoUserId = 'demo-user-default';
+    if (!this.users.has(demoUserId)) {
+      this.users.set(demoUserId, {
+        id: demoUserId,
+        phoneNumber: '+919876543210',
+        email: 'demo@saral-ai.org',
+        displayName: 'Aarav Patel (Demo Caregiver)',
+        role: 'consumer_owner',
+        status: 'active',
+        preferredUiLanguage: 'en-IN',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
+    if (!this.consentRecords.some((c) => c.userId === demoUserId && c.consentType === 'data_processing')) {
+      this.consentRecords.push({
+        id: 'demo-consent-dp',
+        userId: demoUserId,
+        consentType: 'data_processing',
+        granted: true,
+        consentVersion: 'dpdp-v1.0',
+        ipAddress: '127.0.0.1',
+        recordedAt: new Date().toISOString(),
+      });
+    }
+    if (!this.consentRecords.some((c) => c.userId === demoUserId && c.consentType === 'ai_processing_third_party')) {
+      this.consentRecords.push({
+        id: 'demo-consent-ai',
+        userId: demoUserId,
+        consentType: 'ai_processing_third_party',
+        granted: true,
+        consentVersion: 'dpdp-v1.0',
+        ipAddress: '127.0.0.1',
+        recordedAt: new Date().toISOString(),
+      });
+    }
+
+    const demoProfile1 = 'demo-profile-1';
+    if (!this.patientProfiles.has(demoProfile1)) {
+      this.patientProfiles.set(demoProfile1, {
+        id: demoProfile1,
+        ownerUserId: demoUserId,
+        organizationId: null,
+        displayName: 'Amma (Mother)',
+        defaultTargetLanguage: 'hi-IN',
+        dateOfBirth: '1965-08-15',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
+    const demoProfile2 = 'demo-profile-2';
+    if (!this.patientProfiles.has(demoProfile2)) {
+      this.patientProfiles.set(demoProfile2, {
+        id: demoProfile2,
+        ownerUserId: demoUserId,
+        organizationId: null,
+        displayName: 'Self',
+        defaultTargetLanguage: 'ta-IN',
+        dateOfBirth: '1998-04-20',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
+    const periodStart = `${new Date().toISOString().slice(0, 7)}-01`;
+    const quotaKey = `user:${demoUserId}:${periodStart}`;
+    if (!this.usageCounters.has(quotaKey)) {
+      this.usageCounters.set(quotaKey, {
+        id: 'demo-quota-counter',
+        subjectType: 'user',
+        subjectId: demoUserId,
+        periodStart,
+        scansUsed: 0,
+        planScanLimit: 1000,
+        updatedAt: new Date().toISOString(),
       });
     }
   }
@@ -588,6 +671,7 @@ export class Database {
     this.auditLogs = [];
     this.supportJustifications.clear();
     this.seedSyntheticErasedUser();
+    this.seedDefaultDemoUser();
   }
 }
 

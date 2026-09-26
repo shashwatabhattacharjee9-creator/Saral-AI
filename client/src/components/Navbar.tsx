@@ -85,7 +85,7 @@ export const Navbar: React.FC<Props> = ({ currentView, onNavigate }) => {
 
           <div className="flex items-center gap-2">
             <span className="text-xs text-stone-600 font-medium hidden md:inline bg-stone-100 px-2 py-1 rounded">
-              {user.phoneNumber || user.email}
+              {user.displayName || user.phoneNumber || user.email}
             </span>
             <button
               onClick={logout}
